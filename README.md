@@ -11,9 +11,13 @@ The goal of this project is to create a fully customizable midi pedal that can b
 ## Hardware requirements
 Application is designed to run on ESP32 S3 platform, specifically for device with 4.3" capacitive touch screen ESP32-8048S043C with resolution of 800x480 that can be purchased from aliexpress for less than 20$.
 
-Specification of this device can be 
+Specification of this device can be found [here](assets/ESP32-8048S043 Specifications-EN.pdf).
 
-It supports bare bone 13 note midi pedal PD/3 hardware that can be purchased from thoman [here](https://www.thomann.de/gb/doepfer_mbp25_electronic_with_1_pedal.htm).
+It supports bare bone pedal hardware Doepfer Bass Pedal Fatar PD/3.
+
+![Application screenshot](/assets/images/doepfer-midi-pedal-pd3.jpg)
+
+
 
 This repository maintains source code using Visual Studio Code Platformio.
 
