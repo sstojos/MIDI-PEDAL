@@ -38,8 +38,11 @@ Schematics and PCB design of production ready hardware can be found in a dedicat
 
 You can use this repository for producting PCB at home 
 
-Alternaorvely you can contact me to purchase already built hardware that you just need to plugin in together.
+Alternatively, you can contact me to purchase:
 
+- profesionalyy fabricated PCBs
+* all required components that need to be soldered together
++ all cables required
 
 ## Software design
 
