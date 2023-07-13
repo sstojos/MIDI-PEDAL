@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a project for creating easy configurable midi-pedal that can play notes, chords and midi commands.
+This is a project for creating easy configurable midi-pedal that can play notes, chords and midi programs/commands.
 
 The goal of this project is to create a fully customizable midi pedal that can be built inexpensively  with commodity hardware readily available. 
 
