@@ -28,10 +28,8 @@ All these components need to be connected together with all pull up resisotrs an
 
 This  can be done by using a simple 4x6cm prototype PCB board like this:
 
-![prototype front]() 
-![prototype back]() 
-
-
+![prototype front](/assets/images/pcb-prototype-front.jpg) 
+![prototype back](/assets/images/pcb-prototype-back.jpg) 
 
 
 ## Production ready  hardware 
