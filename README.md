@@ -33,6 +33,8 @@ This  can be done by using a simple 4x6cm prototype PCB board like this:
 
 ## Production ready  hardware 
 
+![expansion board pcb](assets/images/expansion-board-PCB.png)
+
 Schematics and PCB design of production ready hardware can be found in a dedicated repository called ESP32-8048S043C-EXPANSION-BOARD. These files are created by KiCad application.
 
 You can use this repository for getting required artifacts for producing PCB at home.
