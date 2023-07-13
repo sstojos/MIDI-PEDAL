@@ -19,7 +19,9 @@ It supports bare bone pedal hardware Doepfer Bass Pedal Fatar PD/3.
 
 ESP32 S3 diplay device has only 7 GPIOs. That is not enough to control 13 midi note pedal that requires 10 GPIOs plus additional serial TX output pin for MIDi out.
 
-Theefore 
+Theefore there is a need for i2c mulitplexer such as this PCF 8575.
+
+![PCF8575](/assets/images/PCF-8575-i2c-expander.jpg)
 
 This repository maintains source code using Visual Studio Code Platformio.
 
