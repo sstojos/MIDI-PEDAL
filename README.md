@@ -1,10 +1,12 @@
-# MIDI-PEDAL Arduino Project
+# MIDI-PEDAL Project
 
 ## Introduction
-![Application screenshot](/assets/images/screen-shot.png)
+
 This is a project for creating easy configurable midi-pedal that can play notes, chords and midi commands.
 
 The goal of this project is to create a fully customizable midi pedal that can be built inexpensively  with commodity hardware readily available. 
+
+![Application screenshot](/assets/images/screen-shot.png)
 
 ## Hardware requirements
 Application is designed to run on ESP32 S3 platform,  specifically for device with capacitive touch screen ESP32-8048S043C that can be purchased from aliexpress for less than 20$.
