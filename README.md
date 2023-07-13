@@ -24,6 +24,8 @@ Theefore there is a need for i2c mulitplexer such as this PCF 8575.
 
 ![PCF8575](/assets/images/PCF-8575-i2c-expander.jpg)
 
+Finally all this componenet needs to be connected together that can be done by using a simple 4x6cm prototype
+
 Alternatively, you can contact me to purchase already built hardware that you just need to plugin which also adds power supply.
 Schematics and PCB design of this hardware can be found in a dedicated repository called ESP32-8048S043C-EXPANSION-BOARD. 
 
