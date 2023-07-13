@@ -24,7 +24,13 @@ Theefore there is a need for i2c mulitplexer such as this PCF 8575.
 
 ![PCF8575](/assets/images/PCF-8575-i2c-expander.jpg)
 
-All these components need to be connected together that can be done by using a simple 4x6cm prototype PCB board like this:
+All these components need to be connected together with all pull up resisotrs and MIDI out TX and 3V3 resistors for protectipn. 
+
+This  can be done by using a simple 4x6cm prototype PCB board like this:
+
+![prototype front]() 
+![prototype back]() 
+
 
 
 
