@@ -8,8 +8,8 @@ This is a project for creating easy configurable midi-pedal that can play notes,
 
 The goal of this project is to create a fully customizable midi pedal that can be built inexpensively  with commodity hardware readily available. 
 
+## Minimum Prototype Hardware requirements
 
-## Hardware requirements
 Application is designed to run on ESP32 S3 platform, specifically for device with 4.3" capacitive touch screen ESP32-8048S043C with resolution of 800x480 that can be purchased from aliexpress for less than 20$.
 
 Specification of this device can be found [here](assets/ESP32-8048S043 Specifications-EN.pdf).
@@ -24,10 +24,18 @@ Theefore there is a need for i2c mulitplexer such as this PCF 8575.
 
 ![PCF8575](/assets/images/PCF-8575-i2c-expander.jpg)
 
-Finally all this componenet needs to be connected together that can be done by using a simple 4x6cm prototype
+All these components need to be connected together that can be done by using a simple 4x6cm prototype PCB board like this:
 
-Alternatively, you can contact me to purchase already built hardware that you just need to plugin which also adds power supply.
-Schematics and PCB design of this hardware can be found in a dedicated repository called ESP32-8048S043C-EXPANSION-BOARD. 
+
+
+## Production ready  hardware 
+
+Schematics and PCB design of production ready hardware can be found in a dedicated repository called ESP32-8048S043C-EXPANSION-BOARD. 
+
+You can use this repository for producting PCB at home 
+
+Alternaorvely you can contact me to purchase already built hardware that you just need to plugin in together.
+
 
 ## Software design
 
