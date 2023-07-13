@@ -1,6 +1,7 @@
 # MIDI-PEDAL Arduino Project
 
 ## Introduction
+![Application screenshot](/assets/images/screen-shot.png)
 This is a project for creating easy configurable midi-pedal that can play notes, chords and midi commands.
 
 The goal of this project is to create a fully customizable midi pedal that can be built inexpensively  with commodity hardware readily available. 
