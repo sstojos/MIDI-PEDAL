@@ -15,7 +15,7 @@ Specification of this device can be found [here](assets/ESP32-8048S043 Specifica
 
 It supports bare bone pedal hardware Doepfer Bass Pedal Fatar PD/3.
 
-![Application screenshot](/assets/images/doepfer-midi-pedal-pd3.jpg)
+![Doepfer fatar pd/3](/assets/images/doepfer-fatar-pd3.jpg)
 
 ESP32 S3 diplay device has only 7 GPIOs. That is not enough to control 13 midi note pedal that requires 10 GPIOs plus additional serial TX output pin for MIDi out.
 
