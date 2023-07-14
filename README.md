@@ -45,7 +45,7 @@ Alternatively, you can contact me to purchase:
 * all required components that need to be soldered together
 + all cables and screws required to connect PCB to esp32 display
   
-##3D enclosure design
+## 3D enclosure design
 
 Design of 3D printable parts for Doepfer Fatar PD3 pedal can be found inside Doepfer Fatar PD3 enclosure repository. They are created using the Openscad application.
 
