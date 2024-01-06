@@ -7,6 +7,11 @@
 #ifndef SETTINGS_FACADE_H_
 #define  SETTINGS_FACADE_H_
 
+#ifndef ARDUINO_H_
+#define ARDUINO_H_
+#include <Arduino.h>
+#endif
+
 #include <stdbool.h>
 
 #pragma once
@@ -15,21 +20,44 @@ extern "C"
 {
 #endif
 
-     void setVelocity(int);
+     int getOctave();
      void setOctave(int);
-     void setChannel(int);
+
+     int getVelocity();
+     void setVelocity(int);
+
+     int getChannelNote();
+     void setChannelNote(int);
+
+     int getChannelChord();
+     void setChannelChord(int);
+
+     bool getNoteOff();
      void setNoteOff(bool);
+     void toggleNoteOff();
+
+     bool getDoubleNote();
      void setDoubleNote(bool);
      void toggleDoubleNote();
-     void toggleNoteOff();
-     void setChordPlaying(bool);
-     int getVelocity();
-     int getOctave();
-     bool getNoteOff();
-     bool getDoubleNote();
-     int getChannel();
-     char getChordType(int);
-     bool getChordPlaying();
+
+     int getState();
+     void setState(int);
+
+     int getChordSet();
+     void setChordSet(int);
+
+     int (*getChordsSetPointer())[22];
+
+     int getChordsSetRootNote(int);
+     int getChordsSetMode(int);
+     int getChordsSetOctave(int);
+
+     void setChordsSetRootNote(int, int);
+     void setChordsSetMode(int, int);
+     void setChordsSetOctave(int, int);
+
+	void configChord(int,int,int);
+
 #pragma once
 #ifdef __cplusplus
 }

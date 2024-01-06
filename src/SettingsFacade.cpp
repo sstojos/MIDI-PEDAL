@@ -15,6 +15,7 @@
 
 Settings * facade_settings = Settings::getInstance();
 
+
 /*
  * set Velocity Facade
  */
@@ -34,11 +35,19 @@ void setOctave(int newOctavem)
 
 
 /*
- * set Channel Facade
+ * set Channel Note Facade
  */
-void setChannel(int newChannel)
+void setChannelNote(int newChannel)
 {
-	facade_settings->setChannel(newChannel);
+	facade_settings->setChannelNote(newChannel);
+};
+
+/*
+ * set Channel Chord Facade
+ */
+void setChannelChord(int newChannel)
+{
+	facade_settings->setChannelChord(newChannel);
 };
 
 
@@ -75,10 +84,25 @@ void toggleNoteOff()
 };
 
 /*
- * set Chord Playing Facade
+ * get Status Facade
  */
-void setChordPlaying(bool myChordPlaying) {
-    return facade_settings->setChordPlaying(myChordPlaying);
+int getState() {
+    return facade_settings->getState();
+}
+
+
+/*
+ * set Status  Facade
+ */
+void setState(int index) {
+    return facade_settings->setState(index);
+}
+
+/*
+ * set Chord Set Facade
+ */
+void setChordSet(int index) {
+    return facade_settings->setChordSet(index);
 }
 
 /*
@@ -112,24 +136,58 @@ bool getDoubleNote() {
 }
 
 /*
- * get Channel Facade
+ * get Channel Note Facade
  */
-int getChannel() {
-    return facade_settings->getChannel();
+int getChannelNote() {
+    return facade_settings->getChannelNote();
 }
 
 /*
- * get Chord Type Facade
+ * get Channel Chord Facade
  */
-char getChordType(int type)  {
-    return facade_settings->getChordType(type);
+int getChannelChord() {
+    return facade_settings->getChannelChord();
 }
 
 /*
- * get Chord Playing Facade
+ * get Chord Set Facade
  */
-bool getChordPlaying() {
-    return facade_settings->getChordPlaying();
+int getChordSet() {
+    return facade_settings->getChordSet();
 }
 
+int (*getChordsSetPointer())[22] {
+    return facade_settings->getChordsSetPointer();
+}
 
+int getChordsSetRootNote(int chordsSet) {
+  return facade_settings->getChordsSetRootNote(chordsSet);
+}
+
+int getChordsSetMode(int chordsSet) {
+  return facade_settings->getChordsSetMode(chordsSet);
+}
+
+int getChordsSetOctave(int chordsSet) {
+  return facade_settings->getChordsSetOctave(chordsSet);
+}
+
+void setChordsSetRootNote(int chordsSet, int rootNote) {
+  return facade_settings->setChordsSetRootNote(chordsSet, rootNote);
+}
+
+void setChordsSetMode(int chordsSet, int mode) {
+  return facade_settings->setChordsSetMode(chordsSet, mode);
+}
+
+void setChordsSetOctave(int chordsSet, int octave) {
+  return facade_settings->setChordsSetOctave(chordsSet, octave);
+}
+
+/*
+ * set Octave Facade
+ */
+void configChord(int chordSet, int rootNote, int chordType)
+{
+    facade_settings->configChord(chordSet, rootNote,chordType);
+};

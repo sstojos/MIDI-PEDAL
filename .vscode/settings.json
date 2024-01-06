@@ -8,7 +8,10 @@
         "fstream": "cpp",
         "istream": "cpp",
         "ostream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "settingsfacade.h": "c",
+        "ratio": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "cmake.sourceDirectory": "C:/Users/stojos/Documents/PlatformIO/Projects/MIDI-BASS-LVGL-S3/.pio/libdeps/esp32-s3-devkitc-1/lvgl"
 }

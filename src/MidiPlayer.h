@@ -78,53 +78,23 @@ class MidiPlayer {
 	Settings * mp_settings = Settings::getInstance();
 
 
-	// notesPlaying is an cache array that stores
-	// all notes currently playing so that
-	// they can be stoped by app when needed
-	//  (e.g when octave or channel is changed)
-
-	// Define array that will store notes playing.
-	// First position in array stores the number of notes currently playing
-	// Second position stores channel
-	// the other twentysix store octave and index for each 13 pedals in a cased that all 13 are played at the same time
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
-	// | number of notes playing | channel | note1 octave | note1 pedal index | note2 octave | note2 pedal index | .... | note13 octave | note 13 pedal index |
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------
-	int notesPlaying[28] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-
-	//major scale represented as number of intervals  between each note - for two octaves so that all 7 chords for all modes can be retrived by the same index
-	int ionianScale[16] =     {2,2,1,2,2,2,1,2,2,1,2,2,2,1,2,2};
-    //                         C,D,E,F,G,A,B,C,D,E,F,G,A,B,C
-
-	// 7 arrays that represend chord for 7 modes  
-	// this will be populated programatically when user selects the root note and its mode
-	// this is set on C and ionian when the pedal starts by init method.
-	int modeChord1[3] = {0,0,0};
-	int modeChord2[3] = {0,0,0};
-	int modeChord3[3] = {0,0,0};
-	int modeChord4[3] = {0,0,0};
-	int modeChord5[3] = {0,0,0};
-	int modeChord6[3] = {0,0,0};
-	int modeChord7[3] = {0,0,0};
-
-	// chord pedal triggerindex has for each pedalindex the value the represent the name of modeChord array that store notes for playing chord for that pedal index
-	// - value can be 0 if pedal index is not assigned to chord (pedal index is for note that is not part of mode and hence can not trigger the chord)
-	// - value can also be a number from 1 - 7 that represent which modeChord array to use (there are only 7 chords in each mode)
-	// this will be populated programamtically in chord configuration sreen when user selects the root note and desired mode
-	// this is set on C and ionian when the pedal starts.
-	int chordPedalTrigger[13] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-	// cache to store what is the last playing pedal index that triggered the chord
-	int lastPlayingChordPedalIndex;
-
-	//utility buffer for converting char to string of a single char
-	char myBuff[1] = {' '};
+	// currentlyPlaying is an array that stores notes that are played that need to be at some point stopped 
+	// MIDI foot pedal can play only one pedal at any  time
+	// single pedal can play a chord with maximum 10 notes for most complex chords
+	// chord set exist for midi player to know when to play chord of the same pedal but from a differetn set instead of stoppign existing playing. Here is the case
+	// 		note off is switched off 
+	//		pedal is currenlty playing
+	//		chord set is chnaged after pedal is played
+	//		the same pedal is pressed again
+	// in this case chord from different set should be played insetad of stoping all notes only
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// | total notes playing | pedal index | chordset | channel | note1 octave | note1 index | note2 octave | note2 index | ... | note10 octave | note 10 index |
+	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	int currentlyPlaying[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 	private:
 		int getNoteOnCommand(int);
-		void removeNotePlayingFromCache(int);
-		void addNotePlayingToCache(int, int);
+		void addNoteToCurrentlyPlayingArray(int, int, int, int);
 		// play note based on note index, octave, channel and velocity
 		void playNoteOn(int, int, int, int);
 		// turn off note basewd on note index, octave, and channel
@@ -140,15 +110,9 @@ class MidiPlayer {
 		// check if anything is playing
 		boolean isNotePlaying();
 		// check what is the last note sent to MIDI out
-		int getLastNote();
+		int getLastPlayedPedal();
 		//get a MIDI NOTE from index
 		int getMidiNote(int, int);
-		// get the last triggered pedal index for chord
-		int getLastChordPedalIndex();
-		// get a root note for chord
-		int getChordRootNote();
-		//get a chord type 0: major, 1: minor and 2: diminished
-		int getChordType();
 
 	public:
 
@@ -164,8 +128,6 @@ class MidiPlayer {
 		//this is used by MIDI PEDAL to stop anythign playing when required (e.g. when swiching betwen playing modes or to configuration screens)
 		void stopNotes();
 
-		//this is used by MIDI PEDAL to set note and mode for chord playing
-		void setModeChords(int, int);
 };
 
 #endif
