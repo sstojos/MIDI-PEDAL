@@ -30,6 +30,8 @@
 # define SDApin 13
 # define SCLpin 12
 
+bool device_init=false;
+
 Settings * mp_Settings = Settings::getInstance();
  
 MidiPlayer midiPlayer;
@@ -415,35 +417,36 @@ void setup()
 
   while(!Serial && !Serial.available()){}
 
-  //Log.begin(LOG_LEVEL_TRACE, &Serial);
-  Log.begin(LOG_LEVEL_ERROR, &Serial);
+  Log.begin(LOG_LEVEL_TRACE, &Serial);
+  //Log.begin(LOG_LEVEL_ERROR, &Serial);
   //Log.begin(LOG_LEVEL_INFO, &Serial);
-
-
-  //set default settings
-  mp_Settings->init();
-
-  midiPlayer.init();
 
   pcf8575I2C.begin(SDApin,SCLpin,400000); // SDA pin 5, SCL pin 4 builtin OLED
 
   //Init Pedal hardware
-    if (!PCF.begin())
-    {
-      Log.error(F("could not initialize..."CR));
-    }
-    if (!PCF.isConnected())
-    {
-      Log.error(F("=> not connected"CR));
-    }
-    else
-    {
-      Log.info(F("=> connected!!"CR));
-    }
+  if (!PCF.begin())  {
+    Log.error(F("could not initialize..."CR));
+  }
 
-    PCF.read16();
+  if (!PCF.isConnected())  {
+    Log.error(F("=> not connected"CR));
+  }  else  {
+    Log.info(F("=> connected!!"CR));
+  }
 
-  // Init Display
+  PCF.read16();
+
+  mp_Settings->setFactoryReset(true);
+
+  Log.trace(F("Initializing settings"CR));
+  mp_Settings->init();
+
+  Log.trace(F("Initializing Midi player"CR));
+  midiPlayer.init();
+
+
+  Log.info(F("LVGL Display Setup ..."CR));
+  
   gfx->begin();
   pinMode(TFT_BL, OUTPUT);
   digitalWrite(TFT_BL, HIGH);
@@ -456,14 +459,14 @@ void setup()
    
   disp_draw_buf = (lv_color_t *)heap_caps_malloc(sizeof(lv_color_t) * screenWidth * screenHeight/4 , MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
 
-  if (!disp_draw_buf)
- {
+  if (!disp_draw_buf) {
+
     Log.error(F("LVGL disp_draw_buf allocate failed!"CR));
-  }
-  else
-  {
+
+  } else {
+
     lv_disp_draw_buf_init(&draw_buf, disp_draw_buf, NULL, screenWidth * screenHeight/4);
-//    lv_disp_draw_buf_init( &draw_buf, buf, NULL, 800 * 480 / 4 );
+    //    lv_disp_draw_buf_init( &draw_buf, buf, NULL, 800 * 480 / 4 );
     /* Initialize the display */
     lv_disp_drv_init(&disp_drv);
     /* Change the following line to your display resolution */
@@ -480,16 +483,18 @@ void setup()
     indev_drv.read_cb = my_touchpad_read;
     lv_indev_drv_register(&indev_drv);
 
-     screen_init();
-//        lv_demo_widgets(); 
-
     Log.info(F("LVGL Display Setup done"CR));
+
+    Log.trace(F("Initializing Screen"CR));
+    screen_boot();
+    screen_init();
+
   }
 }
 
 void loop()
 {
-  lv_timer_handler(); /* let the GUI do its work */
-  readPedal();
-  readSwitches();
+    lv_timer_handler(); /* let the GUI do its work */
+    readPedal();
+    readSwitches();
 }

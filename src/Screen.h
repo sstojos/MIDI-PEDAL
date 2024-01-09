@@ -11,6 +11,8 @@ extern "C" {
 
 void screen_init();
 
+void screen_boot();
+
 void renderNote(char *);
 void renderChord(int);
 void renderProgCom(char *);

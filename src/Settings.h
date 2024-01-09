@@ -10,6 +10,9 @@
 
 using namespace std;
 
+#include "FS.h"
+#include "SPIFFS.h"
+
 
 
 class Settings {
@@ -73,6 +76,25 @@ class Settings {
 		{"Diminished", "Diminished 7", "Half Diminished 7", " ", " ", " "},
 		{"Sus 2", "Sus 4", " ", " ", " ", " "},
 		{"Augmented", "Augmented 7", " ", " ", " ", " "}
+	};
+
+	const char *patchNames[16][4] = { 
+		{"/00/00-empty", "/00/01-empty", "/00/02-empty", "/00/03-empty"},
+		{"/01/00-empty", "/01/01-empty", "/01/02-empty", "/01/03-empty"},
+		{"/02/00-empty", "/02/01-empty", "/02/02-empty", "/02/03-empty"},
+		{"/03/00-empty", "/03/01-empty", "/03/02-empty", "/03/03-empty"},
+		{"/04/00-empty", "/04/01-empty", "/04/02-empty", "/04/03-empty"},
+		{"/05/00-empty", "/05/01-empty", "/05/02-empty", "/05/03-empty"},
+		{"/06/00-empty", "/06/01-empty", "/06/02-empty", "/06/03-empty"},
+		{"/07/00-empty", "/07/01-empty", "/07/02-empty", "/07/03-empty"},
+		{"/08/00-empty", "/08/01-empty", "/08/02-empty", "/08/03-empty"},
+		{"/09/00-empty", "/09/01-empty", "/09/02-empty", "/09/03-empty"},
+		{"/10/00-empty", "/10/01-empty", "/10/02-empty", "/10/03-empty"},
+		{"/11/00-empty", "/11/01-empty", "/11/02-empty", "/11/03-empty"},
+		{"/12/00-empty", "/12/01-empty", "/12/02-empty", "/12/03-empty"},
+		{"/13/00-empty", "/13/01-empty", "/13/02-empty", "/13/03-empty"},
+		{"/14/00-empty", "/14/01-empty", "/14/02-empty", "/14/03-empty"},
+		{"/15/00-empty", "/15/01-empty", "/15/02-empty", "/15/03-empty"}
 	};
 
 	// chord configuration arrays
@@ -168,12 +190,22 @@ class Settings {
 		void setModeChords(int, int, int, int);
 		//get a chord type 0: major, 1: minor and 2: diminished
 		int evalChordType(int, int);
+		
+		bool loadSnapshotInternal(fs::FS&, const char *);
+		bool saveSnapshotInternal(fs::FS&, const char *);
+		bool saveEmptySnapShotInternal(fs::FS&, int, int);
+		void deleteSnapshotInternal(fs::FS&, const char *);
+		bool renameSnapShotInternal(fs::FS&, const char *, const char *);
+		void listSnapShotsInternal(fs::FS&, const char *, uint8_t);
+
 
 	public:
 	 	int (*chordsSetPointer)[22];
 	    static Settings * getInstance();
 
-		void init();
+		bool init();
+		bool getFactoryReset();
+		void setFactoryReset(bool);
 	
 		int getOctave();
 		void setOctave(int);
@@ -211,6 +243,10 @@ class Settings {
 		void setChordsSetOctave(int, int);
 
 		void configChord(int,int,int);
+
+		void listSnapshots();
+		bool loadSnapshot(const char *);
+		bool saveSnapshot(const char *);
 
 };
 

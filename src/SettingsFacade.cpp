@@ -191,3 +191,16 @@ void configChord(int chordSet, int rootNote, int chordType)
 {
     facade_settings->configChord(chordSet, rootNote,chordType);
 };
+
+
+void listSnapshots() {
+    facade_settings->listSnapshots();
+};
+
+bool loadSnapshot(const char * path) {
+    return facade_settings->loadSnapshot(path);
+};
+
+bool saveSnapshot(const char * path) {
+    return facade_settings->saveSnapshot(path);
+};

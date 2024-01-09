@@ -29,6 +29,7 @@ static lv_obj_t * chord_tab_conf_container;
 static lv_obj_t * chord_tab_advanced_conf_container;
 static lv_obj_t * chord_type_container;
 static lv_obj_t * chord_variant_container;
+static lv_obj_t * screen_boot_container;
 
 static lv_obj_t * mb_noteSettingsText;
 static lv_obj_t * note_settings_button;
@@ -265,8 +266,8 @@ void change_chord_set_clicked() {
 
 static void root_note_up_event(lv_event_t * e)
 {
-    (getChordsSetRootNote(getChordSet())==12) ? setChordsSetRootNote(getChordSet(), 0) : setChordsSetRootNote(getChordSet(), getChordsSetRootNote(getChordSet())+1) ;
-    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet())));
+    (getChordsSetRootNote(getChordSet)==12) ? setChordsSetRootNote(getChordSet(), 0) : setChordsSetRootNote(getChordSet(), getChordsSetRootNote(getChordSet())+1) ;
+    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet)));
     renderChords();
 }
 
@@ -276,8 +277,8 @@ void root_note_up_switch() {
 
 static void root_note_down_event(lv_event_t * e)
 {
-    (getChordsSetRootNote(getChordSet())==0) ? setChordsSetRootNote(getChordSet(), 12) : setChordsSetRootNote(getChordSet(), getChordsSetRootNote(getChordSet())-1) ;
-    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet())));
+    (getChordsSetRootNote(getChordSet)==0) ? setChordsSetRootNote(getChordSet(), 12) : setChordsSetRootNote(getChordSet(), getChordsSetRootNote(getChordSet())-1) ;
+    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet)));
     renderChords();
 }
 
@@ -288,8 +289,8 @@ void root_note_down_switch() {
 
 static void harmony_mode_up_event(lv_event_t * e)
 {
-    (getChordsSetMode(getChordSet())==7) ? setChordsSetMode(getChordSet(), 1) : setChordsSetMode(getChordSet(), getChordsSetMode(getChordSet())+1) ;
-    lv_label_set_text(harmony_mode_value_label, modeNames[getChordsSetMode(getChordSet())]);
+    (getChordsSetMode(getChordSet)==7) ? setChordsSetMode(getChordSet(), 1) : setChordsSetMode(getChordSet(), getChordsSetMode(getChordSet())+1) ;
+    lv_label_set_text(harmony_mode_value_label, modeNames[getChordsSetMode(getChordSet)]);
     renderChords();
 }
 
@@ -299,8 +300,8 @@ void harmony_mode_up_switch() {
 
 static void harmony_mode_down_event(lv_event_t * e)
 {
-    (getChordsSetMode(getChordSet())==1) ? setChordsSetMode(getChordSet(), 7) : setChordsSetMode(getChordSet(), getChordsSetMode(getChordSet())-1) ;
-    lv_label_set_text(harmony_mode_value_label, modeNames[getChordsSetMode(getChordSet())]);
+    (getChordsSetMode(getChordSet)==1) ? setChordsSetMode(getChordSet(), 7) : setChordsSetMode(getChordSet(), getChordsSetMode(getChordSet())-1) ;
+    lv_label_set_text(harmony_mode_value_label, modeNames[getChordsSetMode(getChordSet)]);
     renderChords();
 }
 
@@ -629,7 +630,7 @@ static void chord_settings_event(lv_event_t * e) {
     setState(21);
     lv_label_set_text_fmt(channel_chord_value_label, "Channel %d", getChannelChord());
     lv_label_set_text_fmt(octave_chord_value_label, "Octave %d", getChordsSetOctave(getChordSet()));
-    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet())));
+    lv_label_set_text_fmt(root_note_chord_value_label, "Root Note %s", getChordNoteName(getChordsSetRootNote(getChordSet)));
     lv_label_set_text(harmony_mode_value_label, modeNames[getChordsSetMode(getChordSet)]);
 
 }
@@ -1101,8 +1102,29 @@ void renderChords() {
 
 }
 
+
+void screen_boot() {
+    // define container for screen boot
+    screen_boot_container = lv_obj_create(lv_scr_act());
+    lv_obj_set_size(screen_boot_container, lv_pct(100), lv_pct(100));
+    lv_obj_align(screen_boot_container, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_bg_color(screen_boot_container, lv_color_black(), LV_PART_MAIN);
+    lv_obj_set_style_border_width(screen_boot_container, 0, LV_PART_MAIN);
+
+    //boot message
+    lv_obj_t * boot_label_style;
+    lv_style_init(&boot_label_style);
+    lv_style_set_text_font(&boot_label_style, &lv_font_montserrat_48);
+
+    lv_obj_t * mb_bootLabel = lv_label_create(screen_boot_container);
+    lv_obj_align(mb_bootLabel, LV_ALIGN_CENTER, 0, 0);
+    lv_label_set_text(mb_bootLabel, "Initializing Stojos MIDI player ...");
+    lv_obj_add_style(mb_bootLabel, &boot_label_style, _LV_STYLE_STATE_CMP_SAME);
+}
+
 void screen_init() {
 
+    lv_obj_move_background(screen_boot_container);
 
     /*Create MIDI note velocity slider*/
     mb_velocitySlider = lv_slider_create(lv_scr_act());
@@ -2002,7 +2024,6 @@ void chord_settings_advanced_screen() {
 
 char * getChordTypeName(int tmpIndex) {
 
-    //int (*p)[22];
     p = getChordsSetPointer();
 
     if (p[tmpIndex][21] == 0) {

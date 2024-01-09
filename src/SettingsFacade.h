@@ -20,6 +20,9 @@ extern "C"
 {
 #endif
 
+
+     void setFactoryReset(bool);
+
      int getOctave();
      void setOctave(int);
 
@@ -45,7 +48,6 @@ extern "C"
 
      int getChordSet();
      void setChordSet(int);
-
      int (*getChordsSetPointer())[22];
 
      int getChordsSetRootNote(int);
@@ -57,6 +59,10 @@ extern "C"
      void setChordsSetOctave(int, int);
 
 	void configChord(int,int,int);
+
+     void listSnapshots();
+     bool loadSnapshot(const char *);
+     bool saveSnapshot(const char *);
 
 #pragma once
 #ifdef __cplusplus
