@@ -64,6 +64,8 @@ extern "C"
      bool loadSnapshot(const char *);
      bool saveSnapshot(const char *);
 
+     const char * getShapshotName();
+
 #pragma once
 #ifdef __cplusplus
 }

@@ -16,7 +16,7 @@
 
 #include <Preferences.h>
 
-String snapshot_name;
+const char * snapshot_name;
 
 Preferences preferences;
 
@@ -1545,4 +1545,8 @@ void Settings::deleteSnapshotInternal(fs::FS &fs, const char * path){
     } else {
         Log.trace(F("- delete failed"CR));
     }
+}
+
+const char * Settings::getShapshotName() {
+  return snapshot_name;
 }

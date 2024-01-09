@@ -248,6 +248,8 @@ class Settings {
 		bool loadSnapshot(const char *);
 		bool saveSnapshot(const char *);
 
+        const char * getShapshotName();
+
 };
 
 #endif

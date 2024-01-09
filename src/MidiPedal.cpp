@@ -436,7 +436,7 @@ void setup()
 
   PCF.read16();
 
-  mp_Settings->setFactoryReset(true);
+  //mp_Settings->setFactoryReset(true);
 
   Log.trace(F("Initializing settings"CR));
   mp_Settings->init();
@@ -486,7 +486,7 @@ void setup()
     Log.info(F("LVGL Display Setup done"CR));
 
     Log.trace(F("Initializing Screen"CR));
-    screen_boot();
+//    screen_boot();
     screen_init();
 
   }

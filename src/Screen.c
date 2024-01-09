@@ -1124,7 +1124,7 @@ void screen_boot() {
 
 void screen_init() {
 
-    lv_obj_move_background(screen_boot_container);
+//    lv_obj_move_background(screen_boot_container);
 
     /*Create MIDI note velocity slider*/
     mb_velocitySlider = lv_slider_create(lv_scr_act());

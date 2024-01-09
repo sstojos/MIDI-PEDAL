@@ -204,3 +204,7 @@ bool loadSnapshot(const char * path) {
 bool saveSnapshot(const char * path) {
     return facade_settings->saveSnapshot(path);
 };
+
+const char * getShapshotName() {
+  return facade_settings->getShapshotName();
+}
