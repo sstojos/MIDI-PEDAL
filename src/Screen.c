@@ -30,6 +30,7 @@ static lv_obj_t * chord_tab_advanced_conf_container;
 static lv_obj_t * chord_type_container;
 static lv_obj_t * chord_variant_container;
 static lv_obj_t * screen_boot_container;
+static lv_obj_t * snapshot_screen_container;
 
 static lv_obj_t * mb_noteSettingsText;
 static lv_obj_t * note_settings_button;
@@ -551,6 +552,7 @@ void changeTabNote() {
     lv_obj_move_background(note_tab_conf_container);
     lv_obj_move_background(chord_tab_conf_container);
     lv_obj_move_background(chord_tab_advanced_conf_container);
+    lv_obj_move_background(snapshot_screen_container);
     renderNoteSettings();
     setState(1);
 }
@@ -560,6 +562,7 @@ void changeTabChord() {
     lv_obj_move_background(note_tab_conf_container);
     lv_obj_move_background(chord_tab_conf_container);
     lv_obj_move_background(chord_tab_advanced_conf_container);
+    lv_obj_move_background(snapshot_screen_container);
     renderChordSettings();
     renderChords();
     setState(2);
@@ -598,6 +601,7 @@ static void tabview_change_event(lv_event_t * e)
     lv_obj_move_background(note_tab_conf_container);
     lv_obj_move_background(chord_tab_conf_container);
     lv_obj_move_background(chord_tab_advanced_conf_container);
+    lv_obj_move_background(snapshot_screen_container);
 
     if ( lv_tabview_get_tab_act(objTabView) == 0 ) {
         setState(1);
@@ -618,11 +622,24 @@ static void tabview_change_event(lv_event_t * e)
 }
 
 static void note_settings_event(lv_event_t * e) {
-
-    lv_obj_move_foreground(note_tab_conf_container);
-    setState(11);
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_CLICKED) {
+        lv_obj_move_foreground(note_tab_conf_container);
+        setState(11);
+    }
 }
 
+static void snapshot_settings_event(lv_event_t * e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_CLICKED) {
+        lv_obj_move_foreground(snapshot_screen_container);
+        setState(4);
+    }
+}
+
+void snapshot_settings_open() {
+    lv_event_send(mb_noteSettingsText, LV_EVENT_CLICKED, NULL);
+}
 
 static void chord_settings_event(lv_event_t * e) {
 
@@ -1103,44 +1120,51 @@ void renderChords() {
 }
 
 
-void screen_boot() {
-    // define container for screen boot
-    screen_boot_container = lv_obj_create(lv_scr_act());
-    lv_obj_set_size(screen_boot_container, lv_pct(100), lv_pct(100));
-    lv_obj_align(screen_boot_container, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_style_bg_color(screen_boot_container, lv_color_black(), LV_PART_MAIN);
-    lv_obj_set_style_border_width(screen_boot_container, 0, LV_PART_MAIN);
+//void screen_boot() {
+//    // define container for screen boot
+//    screen_boot_container = lv_obj_create(lv_scr_act());
+//    lv_obj_set_size(screen_boot_container, lv_pct(100), lv_pct(100));
+//    lv_obj_align(screen_boot_container, LV_ALIGN_CENTER, 0, 0);
+//    lv_obj_set_style_bg_color(screen_boot_container, lv_color_black(), LV_PART_MAIN);
+//    lv_obj_set_style_border_width(screen_boot_container, 0, LV_PART_MAIN);
+//
+//    //boot message
+//    lv_obj_t * boot_label_style;
+//    lv_style_init(&boot_label_style);
+//    lv_style_set_text_font(&boot_label_style, &lv_font_montserrat_48);
+//
+//    lv_obj_t * mb_bootLabel = lv_label_create(screen_boot_container);
+//    lv_obj_align(mb_bootLabel, LV_ALIGN_CENTER, 0, 0);
+//    lv_label_set_text(mb_bootLabel, "Initializing Stojos MIDI player ...");
+//    lv_obj_add_style(mb_bootLabel, &boot_label_style, _LV_STYLE_STATE_CMP_SAME);
+//}
 
-    //boot message
-    lv_obj_t * boot_label_style;
-    lv_style_init(&boot_label_style);
-    lv_style_set_text_font(&boot_label_style, &lv_font_montserrat_48);
 
-    lv_obj_t * mb_bootLabel = lv_label_create(screen_boot_container);
-    lv_obj_align(mb_bootLabel, LV_ALIGN_CENTER, 0, 0);
-    lv_label_set_text(mb_bootLabel, "Initializing Stojos MIDI player ...");
-    lv_obj_add_style(mb_bootLabel, &boot_label_style, _LV_STYLE_STATE_CMP_SAME);
-}
 
 void screen_init() {
 
-//    lv_obj_move_background(screen_boot_container);
-
     /*Create MIDI note velocity slider*/
     mb_velocitySlider = lv_slider_create(lv_scr_act());
-
-
     lv_obj_set_width(mb_velocitySlider, 760);
     lv_obj_align(mb_velocitySlider, LV_ALIGN_TOP_MID, 0, 20);
     lv_slider_set_range(mb_velocitySlider, 0, 127);
     lv_slider_set_value(mb_velocitySlider, getVelocity(), LV_ANIM_OFF);
+    lv_obj_set_style_bg_color(mb_velocitySlider, lv_color_black(), LV_PART_MAIN);
     lv_obj_add_event_cb(mb_velocitySlider, velocity_slider_handler, LV_EVENT_VALUE_CHANGED, NULL);
+
 
     /* create screen tab view */
     mb_tabView = lv_tabview_create(lv_scr_act(), LV_DIR_BOTTOM, 50);
     lv_obj_set_height(mb_tabView, 440);
     lv_obj_align(mb_tabView, LV_ALIGN_BOTTOM_MID, 0, 0);
+    lv_obj_set_style_bg_color(mb_tabView, lv_color_black(), LV_PART_MAIN);
 
+
+    //create snapshot label
+    lv_obj_t * snapshot_label = lv_label_create(lv_scr_act());
+    lv_obj_set_style_text_font(snapshot_label, &lv_font_montserrat_16, LV_PART_MAIN);
+    lv_label_set_text_fmt(snapshot_label, "Snapshot: %s", getShapshotName());
+    lv_obj_align_to(snapshot_label, mb_velocitySlider, LV_ALIGN_OUT_BOTTOM_MID, 0, 12);
 
     // define style for tab labels
 //    static lv_style_t mb_tabs_style;
@@ -1185,7 +1209,22 @@ void screen_init() {
     lv_obj_clear_flag(lv_tabview_get_content(mb_tabView), LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_event_cb(lv_tabview_get_content(mb_tabView), scroll_begin_event, LV_EVENT_SCROLL_BEGIN, NULL);
 
+    snapshot_screen_create();
+
 }
+
+void snapshot_screen_create() {
+    // define container for screen boot
+    snapshot_screen_container = lv_obj_create(lv_scr_act());
+    lv_obj_set_size(snapshot_screen_container, lv_pct(100), lv_pct(80));
+    lv_obj_align(snapshot_screen_container, LV_ALIGN_BOTTOM_MID, 0, -50);
+    lv_obj_set_style_bg_color(snapshot_screen_container, lv_color_black(), LV_PART_MAIN);
+    lv_obj_set_style_border_width(snapshot_screen_container, 0, LV_PART_MAIN);
+    lv_obj_move_background(snapshot_screen_container);
+
+
+}
+
 
 static void note_screen_create(lv_obj_t * parent) {
 
@@ -1203,6 +1242,9 @@ static void note_screen_create(lv_obj_t * parent) {
     lv_obj_set_style_text_line_space(mb_noteSettingsText, 10, LV_PART_MAIN);
     lv_obj_align(mb_noteSettingsText, LV_ALIGN_RIGHT_MID, 0, -20);
     lv_obj_set_style_text_font(mb_noteSettingsText, &lv_font_montserrat_20, LV_PART_MAIN);
+    lv_obj_add_flag(mb_noteSettingsText, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(mb_noteSettingsText, snapshot_settings_event, LV_EVENT_CLICKED, NULL);
+
     renderNoteSettings();
 
     // note settings button
@@ -1231,6 +1273,8 @@ static  void chord_screen_create(lv_obj_t * parent) {
     lv_obj_set_style_text_line_space(mb_chordSettingsText, 10, LV_PART_MAIN);
     lv_obj_set_style_text_font(mb_chordSettingsText, &lv_font_montserrat_20, LV_PART_MAIN);
     lv_obj_align(mb_chordSettingsText, LV_ALIGN_RIGHT_MID, 0, -20);
+    lv_obj_add_flag(mb_chordSettingsText, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_add_event_cb(mb_chordSettingsText, snapshot_settings_event, LV_EVENT_CLICKED, NULL);
 
     renderChordSettings();
 
@@ -1501,17 +1545,8 @@ static  void chord_screen_create(lv_obj_t * parent) {
 
 static  void progcom_screen_create(lv_obj_t * parent) {
 
-    // define program command tab left container
-    lv_obj_t * prog_com_tab_left_container = lv_obj_create(mb_tabProgCom);
-    lv_obj_set_size(prog_com_tab_left_container, lv_pct(62), lv_pct(100));
-
-    // define program command tab right container
-    lv_obj_t * prog_com_tab_right_container = lv_obj_create(mb_tabProgCom);
-    lv_obj_set_size(prog_com_tab_right_container, lv_pct(35), lv_pct(100));
-    lv_obj_align(prog_com_tab_right_container, LV_ALIGN_TOP_RIGHT, 0, 0);
-
-    // define chord label and its style
-    mb_progComLabel = lv_label_create(prog_com_tab_left_container);
+    // define program comm label and its style
+    mb_progComLabel = lv_label_create(parent);
     lv_obj_align(mb_progComLabel, LV_ALIGN_CENTER, 0, 0);
     lv_label_set_text(mb_progComLabel, "");
     lv_obj_add_style(mb_progComLabel, &note_style, _LV_STYLE_STATE_CMP_SAME);

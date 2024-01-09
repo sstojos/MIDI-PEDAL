@@ -286,6 +286,25 @@ void controller(int index, bool status) {
               break;
           }
           break;
+        case 4: //Snapshot settings
+          switch(index) {
+            case 13:
+              // open device settings 
+              break;
+            case 14:
+              // open note playing
+              changeTabNote();
+              break;
+            case 15:
+              // open chord playing screen
+              changeTabChord();
+              break;
+            case 16:
+              // open proram command playing screen
+              changeTabProgCom();
+              break;
+          }
+          break;
       }
     }
   }
@@ -486,7 +505,6 @@ void setup()
     Log.info(F("LVGL Display Setup done"CR));
 
     Log.trace(F("Initializing Screen"CR));
-//    screen_boot();
     screen_init();
 
   }
