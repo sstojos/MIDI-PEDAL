@@ -246,7 +246,8 @@ class Settings {
 
 		void listSnapshots();
 		bool loadSnapshot(const char *);
-		bool saveSnapshot(const char *);
+		void saveSnapshot();
+		bool saveAsSnapshot(const char *);
 
         const char * getShapshotName();
 

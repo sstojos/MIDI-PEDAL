@@ -878,8 +878,8 @@ bool Settings::loadSnapshotInternal(fs::FS &fs, const char * path) {
     // ---------------------
     Log.trace(F("Trying to load  state."CR));
     state = file.read()-48;
-    if (state<1 || state>3) {
-        Log.trace(F("Somethign is wrong reading state - state should be in range  1 - 3. Exiting loading snapshot."CR));
+    if (state<1 || state>4) {
+        Log.trace(F("Somethign is wrong reading state - state should be in range  1 - 4. Exiting loading snapshot."CR));
         file.close();
         return false;
     }
@@ -1145,10 +1145,16 @@ bool Settings::loadSnapshotInternal(fs::FS &fs, const char * path) {
 
 }
 
-bool Settings::saveSnapshot(const char * path) {
-	Log.trace(F("Settings.saveSnapshots() function call."CR));
-	Log.trace(F("Settings.saveSnapshots() function exit."CR));
+bool Settings::saveAsSnapshot(const char * path) {
+	Log.trace(F("Settings.saveAsSnapshot() function call."CR));
+	Log.trace(F("Settings.saveAsSnapshot() function exit."CR));
   return saveSnapshotInternal(SPIFFS, path);
+}
+
+void Settings::saveSnapshot() {
+	Log.trace(F("Settings.saveSnapshot() function call."CR));
+	Log.trace(F("Settings.saveSnapshot() function exit."CR));
+  saveSnapshotInternal(SPIFFS, snapshot_name);
 }
 
 bool Settings::saveSnapshotInternal(fs::FS &fs, const char * path) {

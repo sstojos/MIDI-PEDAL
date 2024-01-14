@@ -62,7 +62,8 @@ extern "C"
 
      void listSnapshots();
      bool loadSnapshot(const char *);
-     bool saveSnapshot(const char *);
+     bool saveAsSnapshot(const char *);
+     void saveSnapshot();
 
      const char * getShapshotName();
 

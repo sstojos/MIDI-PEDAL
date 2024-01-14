@@ -201,8 +201,12 @@ bool loadSnapshot(const char * path) {
     return facade_settings->loadSnapshot(path);
 };
 
-bool saveSnapshot(const char * path) {
-    return facade_settings->saveSnapshot(path);
+bool saveAsSnapshot(const char * path) {
+    return facade_settings->saveAsSnapshot(path);
+};
+
+void saveSnapshot() {
+    facade_settings->saveSnapshot();
 };
 
 const char * getShapshotName() {

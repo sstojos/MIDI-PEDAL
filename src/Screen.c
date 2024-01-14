@@ -6,6 +6,7 @@
 
 int (*p)[22];
 int chordConfigPedalIndex=13;
+int snapshot_screen_called_from = 1;
 
 static lv_obj_t * mb_playContainer;
 
@@ -77,6 +78,10 @@ static lv_obj_t * harmony_mode_down_button;
 
 static lv_obj_t * mb_noteOffButton;
 static lv_obj_t * mb_doubleNoteButton;
+
+static lv_obj_t * snapshot_save_button;
+static lv_obj_t * snapshot_save_as_button;
+static lv_obj_t * snapshot_load_button;
 
 static lv_obj_t * pedal1_label;
 static lv_obj_t * pedal2_label;
@@ -621,6 +626,43 @@ static void tabview_change_event(lv_event_t * e)
 
 }
 
+static void save_snapshot_event(lv_event_t * e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_CLICKED) {
+        if (snapshot_screen_called_from ==  2) {
+            //change state to where it should be so that it is properly saved instead of state 4 (snapshot configuration) where are at at the moment
+            // we do not want device when it loads state to be in snapshot configuration screen - we want to be in playable screen
+            setState(2);
+            // save snapshot
+            saveSnapshot();
+            // go to playable screen from where snapshot setting is called
+            changeTabChord();
+        } else {
+            setState(1);
+            // save snapshot
+            saveSnapshot();
+            // go to playable screen frpm where snapshot setting is called
+            changeTabNote();
+        }
+    }
+}
+
+static void save_as_snapshot_event(lv_event_t * e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_CLICKED) {
+        // do nothing for now
+    }
+}
+
+static void load_snapshot_event(lv_event_t * e) {
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_CLICKED) {
+        // do nothing for now
+    }
+}
+
+
+
 static void note_settings_event(lv_event_t * e) {
     lv_event_code_t code = lv_event_get_code(e);
     if(code == LV_EVENT_CLICKED) {
@@ -634,6 +676,13 @@ static void snapshot_settings_event(lv_event_t * e) {
     if(code == LV_EVENT_CLICKED) {
         lv_obj_move_foreground(snapshot_screen_container);
         setState(4);
+        // remember from where this sfreen is called so when we close it we can go back to that screen
+        if (lv_event_get_current_target(e) == mb_noteSettingsText) {
+            snapshot_screen_called_from = 1;
+        }
+        if (lv_event_get_current_target(e) == mb_chordSettingsText) {
+            snapshot_screen_called_from = 2;
+        }
     }
 }
 
@@ -1214,13 +1263,46 @@ void screen_init() {
 }
 
 void snapshot_screen_create() {
-    // define container for screen boot
+
     snapshot_screen_container = lv_obj_create(lv_scr_act());
     lv_obj_set_size(snapshot_screen_container, lv_pct(100), lv_pct(80));
     lv_obj_align(snapshot_screen_container, LV_ALIGN_BOTTOM_MID, 0, -50);
     lv_obj_set_style_bg_color(snapshot_screen_container, lv_color_black(), LV_PART_MAIN);
     lv_obj_set_style_border_width(snapshot_screen_container, 0, LV_PART_MAIN);
     lv_obj_move_background(snapshot_screen_container);
+
+    //create snapshot label
+    lv_obj_t * snapshot_actions_label = lv_label_create(snapshot_screen_container);
+    //lv_obj_set_style_text_font(snapshot_label, &lv_font_montserrat_16, LV_PART_MAIN);
+    lv_label_set_text_fmt(snapshot_actions_label, "Snapshot: %s", getShapshotName());
+    lv_obj_align(snapshot_actions_label, LV_ALIGN_TOP_MID, 0, 0);
+
+    // save snapshot button
+    snapshot_save_button = lv_btn_create(snapshot_screen_container);
+    lv_obj_t * snapshot_save_btn_label = lv_label_create(snapshot_save_button);
+    lv_label_set_text(snapshot_save_btn_label, "Save Snapshot");
+    lv_obj_center(snapshot_save_btn_label);
+    lv_obj_add_event_cb(snapshot_save_button, save_snapshot_event, LV_EVENT_CLICKED, NULL);
+    lv_obj_align(snapshot_save_button, LV_ALIGN_CENTER, 0, -70);
+    lv_obj_set_width(snapshot_save_button, 250);
+
+    // save as snapshot button
+    snapshot_save_as_button = lv_btn_create(snapshot_screen_container);
+    lv_obj_t * snapshot_save_as_btn_label = lv_label_create(snapshot_save_as_button);
+    lv_label_set_text(snapshot_save_as_btn_label, "Save Snapshot As");
+    lv_obj_center(snapshot_save_as_btn_label);
+    lv_obj_add_event_cb(snapshot_save_as_button, save_as_snapshot_event, LV_EVENT_CLICKED, NULL);
+    lv_obj_align(snapshot_save_as_button, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_width(snapshot_save_as_button, 250);
+
+    // load snapshot button
+    snapshot_load_button = lv_btn_create(snapshot_screen_container);
+    lv_obj_t * snapshot_load_btn_label = lv_label_create(snapshot_load_button);
+    lv_label_set_text(snapshot_load_btn_label, "Load Snapshot");
+    lv_obj_center(snapshot_load_btn_label);
+    lv_obj_add_event_cb(snapshot_load_button, load_snapshot_event, LV_EVENT_CLICKED, NULL);
+    lv_obj_align(snapshot_load_button, LV_ALIGN_CENTER, 0, 70);
+    lv_obj_set_width(snapshot_load_button, 250);
 
 
 }
